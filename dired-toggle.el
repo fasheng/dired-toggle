@@ -35,7 +35,7 @@
 ;; `dired-toggle' provide an simple way to toggle dired buffer for
 ;; current directory(similar to `dired-jump'), and the target buffer
 ;; is specified so that it will be divided from other dired buffers,
-;; for example the dired buffer only shown in a special buffer which
+;; for example the dired buffer only shown in a special name which
 ;; could be edit through the variable `dired-toggle-buffer-name', and
 ;; it will include a minor mode named `dired-toggle-mode' to ensure
 ;; all the actions(such as change directory and open a selected file)
