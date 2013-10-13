@@ -31,7 +31,7 @@
 ;;
 ;;; Commentary:
 ;;
-;;; Description:
+;; Description:
 ;; `dired-toggle' provide an simple way to toggle dired buffer for current
 ;; directory, and the target buffer is specified so that it will be divided
 ;; from other dired buffers, for example the dired buffer only shown
@@ -46,7 +46,7 @@
 ;;
 ;; site: https://github.com/fasheng/dired-toggle
 ;;
-;;; Usage:
+;; Usage:
 ;; Just add the following to your .emacs:
 ;;
 ;; (global-set-key (kbd "<f5>") 'dired-toggle)
@@ -60,7 +60,7 @@
 ;;             (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
 ;;             (setq-local word-wrap nil)))
 ;;
-;;; Default key-bindings:
+;; Default key-bindings:
 ;; | "q"       | dired-toggle-action-quit         |
 ;; | "RET"     | dired-toggle-action-find-file    |
 ;; | "^"       | dired-toggle-action-up-directory |
