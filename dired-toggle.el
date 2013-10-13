@@ -1,4 +1,4 @@
-;;; dired-toggle.el --- toggle dired buffer for current directory
+;;; dired-toggle.el --- provide a simple way to toggle dired buffer for current directory
 ;;
 ;; Copyright (C) 2013, Xu FaSheng
 ;; Version: 20131012.2043
@@ -7,14 +7,9 @@
 ;; Author: Xu FaSheng <fasheng.xu@gmail.com>
 ;; Maintainer: Xu FaSheng
 ;; Package-Requires: ((dired "0"))
-;; URL: TODO
-;; Doc URL: TODO
+;; URL: https://github.com/fasheng/dired_toggle
 ;; Keywords: dired, toggle
 ;; Compatibility: GNU Emacs: 24.x
-;;
-;; Features that might be required by this library:
-;;
-;;   `dired'
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -38,7 +33,7 @@
 ;;; Commentary:
 ;;
 ;;  Description:
-;;  `dired-toggle' provide a easy way to toggle dired buffer for current
+;;  `dired-toggle' provide an simple way to toggle dired buffer for current
 ;;  directory, and the target buffer is specified so that it will be divided
 ;;  from other dired buffers, for example the dired buffer only shown
 ;;  in a special buffer which could be edit through the variable
@@ -69,6 +64,7 @@
 ;;  | "RET"     | dired-toggle-action-find-file    |
 ;;  | "^"       | dired-toggle-action-up-directory |
 ;;  | "C-c C-u" | dired-toggle-action-up-directory |
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
