@@ -13,6 +13,8 @@
     variable =dired-toggle-window-size= and
     =dired-toggle-window-side=.
 
+    site: https://github.com/fasheng/dired-toggle
+
 *** Install
     You could install it easily through [[http://melpa.milkbox.net/#/getting-started][melpa]] by typing =M-x
     package-install dired-toggle=
