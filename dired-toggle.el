@@ -7,9 +7,6 @@
 ;; Author: Xu FaSheng <fasheng.xu@gmail.com>
 ;; Maintainer: Xu FaSheng
 ;; Package-Requires: ((dired "0"))
-;; Last-Updated:
-;;           By:
-;;     Update #: 3
 ;; URL: TODO
 ;; Doc URL: TODO
 ;; Keywords: dired, toggle
@@ -40,6 +37,7 @@
 ;;
 ;;; Commentary:
 ;;
+;;  Description:
 ;;  `dired-toggle' provide a easy way to toggle dired buffer for current
 ;;  directory, and the target buffer is specified so that it will be divided
 ;;  from other dired buffers, for example the dired buffer only shown
@@ -57,7 +55,20 @@
 ;;
 ;;  (global-set-key (kbd "<f3>") 'dired-toggle)
 ;;
+;;  you could also custom functions after `dired-toggle-mode' enabled,
+;;  for example enable `visual-line-mode' for our narrow dired buffer:
 ;;
+;;  (add-hook 'dired-toggle-mode-hook
+;;            (lambda () (interactive)
+;;              (visual-line-mode 1)
+;;              (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
+;;              (setq-local word-wrap nil)))
+;;
+;;  Default key-bindings:
+;;  | "q"       | dired-toggle-action-quit         |
+;;  | "RET"     | dired-toggle-action-find-file    |
+;;  | "^"       | dired-toggle-action-up-directory |
+;;  | "C-c C-u" | dired-toggle-action-up-directory |
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
@@ -145,10 +156,14 @@
     map)
   "Keymap for `dired-toggle-mode'.")
 
+(defvar dired-toggle-mode-hook nil
+  "Function(s) to call after `dired-toggle-mode' enabled.")
+
 (define-minor-mode dired-toggle-mode
   "Assistant minor mode for `dired-toggle'."
   :lighter dired-toggle-modeline-lighter
   :keymap dired-toggle-mode-map
+  :after-hook dired-toggle-mode-hook
   )
 
 ;;;###autoload
