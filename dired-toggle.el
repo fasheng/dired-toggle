@@ -5,8 +5,7 @@
 ;; Author: Xu FaSheng <fasheng.xu@gmail.com>
 ;; Maintainer: Xu FaSheng
 ;; Version: 0.1
-;; Package-Requires: ((dired "0"))
-;; URL: https://github.com/fasheng/dired_toggle
+;; URL: https://github.com/fasheng/dired-toggle
 ;; Keywords: dired, toggle
 ;; Compatibility: GNU Emacs: 24.x
 ;;
