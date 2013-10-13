@@ -46,11 +46,11 @@
 ;;  `dired-toggle-window-size' and `dired-toggle-window-side'.
 ;;
 ;;  Usage:
-;;  Add the following to your .emacs:
+;;  Just add the following to your .emacs:
 ;;
-;;  (global-set-key (kbd "<f3>") 'dired-toggle)
+;;  (global-set-key (kbd "<f5>") 'dired-toggle)
 ;;
-;;  you could also custom functions after `dired-toggle-mode' enabled,
+;;  You could also custom functions after `dired-toggle-mode' enabled,
 ;;  for example enable `visual-line-mode' for our narrow dired buffer:
 ;;
 ;;  (add-hook 'dired-toggle-mode-hook

@@ -14,16 +14,16 @@
     =dired-toggle-window-side=.
 
 *** Install
-    You could install it easily through =melpa= by typing =M-x
+    You could install it easily through [[http://melpa.milkbox.net/#/getting-started][melpa]] by typing =M-x
     package-install dired-toggle=
 
 *** Usage
-    Add the following to your =.emacs=:
+    Just add the following to your =.emacs=:
     #+BEGIN_SRC elisp
-    (global-set-key (kbd "<f3>") 'dired-toggle)
+    (global-set-key (kbd "<f5>") 'dired-toggle)
     #+END_SRC
 
-    you could also custom functions after =dired-toggle-mode= enabled,
+    You could also custom functions after =dired-toggle-mode= enabled,
     for example enable =visual-line-mode= for our narrow dired buffer:
 
     #+BEGIN_SRC elisp
@@ -38,6 +38,9 @@
     | "RET"     | dired-toggle-action-find-file    |
     | "^"       | dired-toggle-action-up-directory |
     | "C-c C-u" | dired-toggle-action-up-directory |
+
+*** Screen shot
+    [[file:screenshot.png]]
 
 *** License
     GNU General Lesser Public License, Version 3.0
