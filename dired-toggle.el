@@ -109,13 +109,8 @@
       (dired-toggle-mode 1)
       ;; default-directory and dired-actual-switches are set now
       ;; (buffer-local), so we can call dired-readin:
-      (let ((failed t))
-        (unwind-protect
-            (progn (dired-readin)
-                   (setq failed nil))
-          ;; dired-readin can fail if parent directories are inaccessible.
-          ;; Don't leave an empty buffer around in that case.
-          (if failed (kill-buffer-and-window))))
+      (unwind-protect
+          (progn (dired-readin)))
       )))
 
 (defun dired-toggle-action-quit ()
@@ -133,8 +128,9 @@
          (dir-p (file-directory-p file)))
     (if dir-p                           ;open a directory
         (dired-toggle-list-dir buffer (file-name-as-directory file))
-      ;; open a file, and delete referred window first
-      (if (window-live-p dired-toggle-refwin)
+      ;; open a file, and delete the referred window firstly
+      (if (and (window-live-p dired-toggle-refwin)
+               (not (window-minibuffer-p dired-toggle-refwin)))
           (delete-window dired-toggle-refwin))
       (dired-find-alternate-file)
     )))
