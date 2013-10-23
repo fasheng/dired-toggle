@@ -130,7 +130,10 @@
         (dired-toggle-list-dir buffer (file-name-as-directory file))
       ;; open a file, and delete the referred window firstly
       (if (and (window-live-p dired-toggle-refwin)
-               (not (window-minibuffer-p dired-toggle-refwin)))
+               (not (window-minibuffer-p dired-toggle-refwin))
+               ;; Some times `dired-toggle-refwin' maybe dired-toggle
+               ;; window itself, so just ignore it.
+               (not (selected-window) dired-toggle-refwin))
           (delete-window dired-toggle-refwin))
       (dired-find-alternate-file)
     )))
