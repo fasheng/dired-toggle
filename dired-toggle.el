@@ -133,7 +133,7 @@
                (not (window-minibuffer-p dired-toggle-refwin))
                ;; Some times `dired-toggle-refwin' maybe dired-toggle
                ;; window itself, so just ignore it.
-               (not (selected-window) dired-toggle-refwin))
+               (not (equal (selected-window) dired-toggle-refwin)))
           (delete-window dired-toggle-refwin))
       (dired-find-alternate-file)
     )))
