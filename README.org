@@ -49,4 +49,4 @@
     [[file:screenshot.png]]
 
 *** License
-    GNU General Lesser Public License, Version 3.0
+    GNU General Public License, Version 3.0
