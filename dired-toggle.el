@@ -79,6 +79,8 @@
 ;;
 ;;; Code:
 
+(require 'dired)
+
 (defvar dired-toggle-buffer-name "*Dired Toggle*"
   "Target buffer name for `dired-toggle'.")
 
