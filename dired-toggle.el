@@ -1,4 +1,4 @@
-;;; dired-toggle.el --- provide a simple way to toggle dired buffer for current directory
+;;; dired-toggle.el --- show dired as sidebar and will not create new buffers when changing directory
 ;;
 ;; Copyright (C) 2013, Xu FaSheng
 ;;
@@ -6,7 +6,7 @@
 ;; Maintainer: Xu FaSheng
 ;; Version: 0.1
 ;; URL: https://github.com/fasheng/dired-toggle
-;; Keywords: dired, toggle
+;; Keywords: dired, sidebar
 ;; Compatibility: GNU Emacs: 24.x
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -32,48 +32,32 @@
 ;;
 ;; Description:
 ;;
-;; `dired-toggle' provide an simple way to toggle dired buffer for
-;; current directory(similar to `dired-jump'), and the target buffer
-;; is specified so that it will be divided from other dired buffers,
-;; for example the dired buffer only shown in a special name which
-;; could be edit through the variable `dired-toggle-buffer-name', and
-;; it will include a minor mode named `dired-toggle-mode' to ensure
-;; all the actions(such as change directory and open a selected file)
-;; under the dired buffer will not influence other dired buffers and
-;; works as we expected.
-;;
-;; You could custom the toggled window's size and side through
-;; variable `dired-toggle-window-size' and `dired-toggle-window-side'.
-;;
-;; Source: https://github.com/fasheng/dired-toggle
-;;
-;; Tips: For a good user experience you may want to use
-;; `dired-details.el' or `dired-hide-details-mode' if use Emacs 24.4
-;; or later.
-;;
+;; `dired-toggle' command could toggle to show dired buffer as a
+;; sidebar for current directory(similar to `dired-sidebar', but more
+;; lightweight). The sidebar buffer also enabled a minor mode named
+;; `dired-toggle-mode', and it only contains one buffer instance,
+;; change directories in it will not create news buffers.
 ;;
 ;; Usage:
 ;;
-;; Just add the following to your .emacs:
-;;
-;; (global-set-key (kbd "<f5>") 'dired-toggle)
-;;
-;; You could also custom functions after `dired-toggle-mode' enabled,
-;; for example enable `visual-line-mode' for our narrow dired buffer:
-;;
-;; (add-hook 'dired-toggle-mode-hook
-;;           (lambda () (interactive)
-;;             (visual-line-mode 1)
-;;             (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
-;;             (setq-local word-wrap nil)))
-;;
-;;
-;; Default key-bindings:
-;;
-;; | "q"       | dired-toggle-action-quit         |
-;; | "RET"     | dired-toggle-action-find-file    |
-;; | "^"       | dired-toggle-action-up-directory |
-;; | "C-c C-u" | dired-toggle-action-up-directory |
+;; (use-package dired-toggle
+;;   :defer t
+;;   :bind (("<f3>" . #'dired-toggle)
+;;          :map dired-mode-map
+;;          ("q" . #'dired-toggle-quit)
+;;          ([remap dired-find-file] . #'dired-toggle-find-file)
+;;          ([remap dired-up-directory] . #'dired-toggle-up-directory)
+;;          ("C-c C-u" . #'dired-toggle-up-directory))
+;;   :config
+;;   (setq dired-toggle-window-size 32)
+;;   (setq dired-toggle-window-side 'left)
+
+;;   ;; Optional, enable =visual-line-mode= for our narrow dired buffer:
+;;   (add-hook 'dired-toggle-mode-hook
+;;             (lambda () (interactive)
+;;               (visual-line-mode 1)
+;;               (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
+;;               (setq-local word-wrap nil))))
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -112,24 +96,30 @@
       ;; default-directory and dired-actual-switches are set now
       ;; (buffer-local), so we can call dired-readin:
       (unwind-protect
-          (progn (dired-readin)))
-      )))
+          (progn (dired-readin))))))
 
-(defun dired-toggle-action-quit ()
-  "Custom quit action under `dired-toggle-mode'."
+;;;###autoload
+(defun dired-toggle-quit ()
+  "Quit action under `dired-toggle-mode'."
   (interactive)
   (if (one-window-p)
       (quit-window)
     (delete-window)))
 
-(defun dired-toggle-action-find-file ()
-  "Custom item action under `dired-toggle-mode'."
+;;;###autoload
+(defun dired-toggle-find-file ()
+  "Wraper for `dired-find-file', use `find-alternate-file' instead so will not
+create new buffer when changing directory, and will keep `dired-toggle-mode' and
+`dired-hide-details-mode' states after opening new direcoty."
   (interactive)
-  (let* ((buffer (current-buffer))
+  (let* ((dired-toggle-enabled (if dired-toggle-mode 1 0))
+         (dired-hide-details-enabled (if dired-hide-details-mode 1 0))
+         (buffer (current-buffer))
          (file (dired-get-file-for-visit))
          (dir-p (file-directory-p file)))
     (if dir-p                           ;open a directory
-        (dired-toggle-list-dir buffer (file-name-as-directory file))
+        ;; (dired-toggle-list-dir buffer (file-name-as-directory file))
+        (find-alternate-file file)
       ;; open a file, and delete the referred window firstly
       (if (and (window-live-p dired-toggle-refwin)
                (not (window-minibuffer-p dired-toggle-refwin))
@@ -137,13 +127,18 @@
                ;; window itself, so just ignore it.
                (not (equal (selected-window) dired-toggle-refwin)))
           (delete-window dired-toggle-refwin))
-      (dired-find-alternate-file)
-    )))
+      (dired-find-file))
+    (dired-toggle-mode dired-toggle-enabled)
+    (dired-hide-details-mode dired-hide-details-enabled)))
 
-(defun dired-toggle-action-up-directory ()
-  "Custom up directory action under `dired-toggle-mode'."
+;;;###autoload
+(defun dired-toggle-up-directory ()
+  "Wraper for `dired-up-directory', use `find-alternate-file' instead so will
+not create new buffer when changing directory, and will keep `dired-toggle-mode'
+and `dired-hide-details-mode' states after opening new direcoty."
   (interactive)
-  (let* ((buffer (current-buffer))
+  (let* ((dired-toggle-enabled (if dired-toggle-mode 1 0))
+         (dired-hide-details-enabled (if dired-hide-details-mode 1 0))
          (dir (dired-current-directory))
          (up (file-name-directory (directory-file-name dir))))
     (or (dired-goto-file (directory-file-name dir))
@@ -151,16 +146,13 @@
         (and (cdr dired-subdir-alist)
              (dired-goto-subdir up))
         (progn
-          (dired-toggle-list-dir buffer up)
-          (dired-goto-file dir)))))
+          (set-buffer-modified-p nil)
+          (find-alternate-file "..")
+          (dired-goto-file dir)))
+    (dired-toggle-mode dired-toggle-enabled)
+    (dired-hide-details-mode dired-hide-details-enabled)))
 
-(defvar dired-toggle-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "q" 'dired-toggle-action-quit)
-    (define-key map (kbd "RET") 'dired-toggle-action-find-file)
-    (define-key map "^" 'dired-toggle-action-up-directory)
-    (define-key map "\C-c\C-u" 'dired-toggle-action-up-directory)
-    map)
+(defvar dired-toggle-mode-map (make-sparse-keymap)
   "Keymap for `dired-toggle-mode'.")
 
 (defvar dired-toggle-mode-hook nil
@@ -170,8 +162,7 @@
   "Assistant minor mode for `dired-toggle'."
   :lighter dired-toggle-modeline-lighter
   :keymap dired-toggle-mode-map
-  :after-hook dired-toggle-mode-hook
-  )
+  :after-hook dired-toggle-mode-hook)
 
 ;;;###autoload
 (defun dired-toggle (&optional dir)
@@ -204,6 +195,7 @@
         (if new-dired-buffer-p
             (dired-toggle-list-dir target-buf dir))
         (with-current-buffer target-buf
+          (dired-hide-details-mode 1)
           ;; TODO mark the referred window that jumping from
           (setq-local dired-toggle-refwin win)
           ;; try to select target file
@@ -212,8 +204,7 @@
                   ;; Toggle omitting, if it is on, and try again.
                   (when dired-omit-mode
                     (dired-omit-mode 0)
-                    (dired-goto-file file)))))
-        ))))
+                    (dired-goto-file file)))))))))
 
 (provide 'dired-toggle)
 
