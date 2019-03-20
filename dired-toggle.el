@@ -1,4 +1,4 @@
-;;; dired-toggle.el --- show dired as sidebar and will not create new buffers when changing directory
+;;; dired-toggle.el --- Show dired as sidebar and will not create new buffers when changing dir
 ;;
 ;; Copyright (C) 2013, Xu FaSheng
 ;;
