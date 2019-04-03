@@ -128,8 +128,9 @@ create new buffer when changing directory, and will keep `dired-toggle-mode' and
                (not (equal (selected-window) dired-toggle-refwin)))
           (delete-window dired-toggle-refwin))
       (dired-find-file))
-    (dired-toggle-mode dired-toggle-enabled)
-    (dired-hide-details-mode dired-hide-details-enabled)))
+    (when (eq major-mode 'dired-mode)
+      (dired-toggle-mode dired-toggle-enabled)
+      (dired-hide-details-mode dired-hide-details-enabled))))
 
 ;;;###autoload
 (defun dired-toggle-up-directory ()
@@ -149,8 +150,9 @@ and `dired-hide-details-mode' states after opening new direcoty."
           (set-buffer-modified-p nil)
           (find-alternate-file "..")
           (dired-goto-file dir)))
-    (dired-toggle-mode dired-toggle-enabled)
-    (dired-hide-details-mode dired-hide-details-enabled)))
+    (when (eq major-mode 'dired-mode)
+      (dired-toggle-mode dired-toggle-enabled)
+      (dired-hide-details-mode dired-hide-details-enabled))))
 
 (defvar dired-toggle-mode-map (make-sparse-keymap)
   "Keymap for `dired-toggle-mode'.")
