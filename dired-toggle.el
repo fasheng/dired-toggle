@@ -170,7 +170,7 @@ and `dired-hide-details-mode' states after opening new direcoty."
 (defun dired-toggle (&optional dir)
   "Toggle current buffer's directory."
   (interactive)
-  (let* ((win (selected-window))
+  (let* ((win (frame-root-window))
          (buf (buffer-name))
          (file (buffer-file-name))
          (dir (or dir (if file (file-name-directory file) default-directory)))
