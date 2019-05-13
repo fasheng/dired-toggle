@@ -202,10 +202,12 @@ DIR is the target direcoty, FILE is the file to be selected."
           ;; try to select target file
           (if file
               (or (dired-goto-file file)
-                  ;; toggle off omit-mode if is on, and try to select file again
+                  ;; toggle off omit mode if is on, and try to select file again
                   (when (and (boundp 'dired-omit-mode) dired-omit-mode)
                     (dired-omit-mode 0)
-                    (dired-goto-file file))))
+                    (or (dired-goto-file file)
+                        ;; restore omit mode if could not select file again
+                        (dired-omit-mode 1)))))
           ;; if cursor at begin of buffer, select the first item
           (if (eq (point) 1)
               (dired-next-line 1)))))))
