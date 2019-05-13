@@ -166,14 +166,13 @@ and `dired-hide-details-mode' states after opening new direcoty."
   :keymap dired-toggle-mode-map
   :after-hook dired-toggle-mode-hook)
 
-;;;###autoload
-(defun dired-toggle (&optional dir)
-  "Toggle current buffer's directory."
-  (interactive)
-  (let* ((win (frame-root-window))
-         (buf (buffer-name))
-         (file (buffer-file-name))
+(defun dired-toggle--do (&optional dir file)
+  "Toggle current buffer's directory.
+DIR is the target direcoty, FILE is the file to be selected."
+  (let* ((file (or file (buffer-file-name)))
          (dir (or dir (if file (file-name-directory file) default-directory)))
+         (win (frame-root-window))
+         (buf (buffer-name))
          (size dired-toggle-window-size)
          (side dired-toggle-window-side)
          (target-bufname dired-toggle-buffer-name)
@@ -203,10 +202,30 @@ and `dired-hide-details-mode' states after opening new direcoty."
           ;; try to select target file
           (if file
               (or (dired-goto-file file)
-                  ;; Toggle omitting, if it is on, and try again.
-                  (when dired-omit-mode
+                  ;; toggle off omit-mode if is on, and try to select file again
+                  (when (and (boundp 'dired-omit-mode) dired-omit-mode)
                     (dired-omit-mode 0)
-                    (dired-goto-file file)))))))))
+                    (dired-goto-file file))))
+          ;; if cursor at begin of buffer, select the first item
+          (if (eq (point) 1)
+              (dired-next-line 1)))))))
+
+;;;###autoload
+(defun dired-toggle (&optional prefix)
+  "Toggle current buffer's directory."
+  (interactive "P")
+  (if prefix
+      (dired-toggle-project-root)
+    (dired-toggle--do)))
+
+;;;###autoload
+(defun dired-toggle-project-root (&optional prefix)
+  "Toggle current project root directory."
+  (interactive "P")
+  (if prefix
+      (dired-toggle--do)
+    (let* ((dir (cdr (project-current 'prompt))))
+      (dired-toggle--do dir))))
 
 (provide 'dired-toggle)
 
