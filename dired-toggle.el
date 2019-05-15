@@ -166,6 +166,14 @@ and `dired-hide-details-mode' states after opening new direcoty."
   :keymap dired-toggle-mode-map
   :after-hook dired-toggle-mode-hook)
 
+(defun dired-toggle--get-window ()
+  "Get the dired-toggle window."
+  (dolist (w (window-list))
+    (when (and (window-live-p w) (buffer-live-p (window-buffer w)))
+      (with-current-buffer (window-buffer w)
+        (when (bound-and-true-p dired-toggle-mode)
+          (return w))))))
+
 (defun dired-toggle--do (&optional dir file)
   "Toggle current buffer's directory.
 DIR is the target direcoty, FILE is the file to be selected."
@@ -177,7 +185,7 @@ DIR is the target direcoty, FILE is the file to be selected."
          (side dired-toggle-window-side)
          (target-bufname dired-toggle-buffer-name)
          (target-buf (get-buffer-create target-bufname))
-         (target-window (get-buffer-window target-buf))
+         (target-window (dired-toggle--get-window))
          (dired-buffer-with-same-dir (dired-find-buffer-nocreate dir))
          (new-dired-buffer-p
           (or (not dired-buffer-with-same-dir)
