@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (C) 2013, Xu FaSheng
 ;;
-;; Author: Xu FaSheng <fasheng.xu@gmail.com>
+;; Author: Xu FaSheng <fasheng[AT]fasheng.info>
 ;; Maintainer: Xu FaSheng
 ;; Version: 0.1
 ;; URL: https://github.com/fasheng/dired-toggle
