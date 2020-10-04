@@ -1,3 +1,6 @@
+[[https://melpa.org/#/elfeed-protocol][https://melpa.org/packages/elfeed-protocol-badge.svg]]
+[[https://stable.melpa.org/#/elfeed-protocol][https://stable.melpa.org/packages/elfeed-protocol-badge.svg]]
+
 *** Description
 
 =dired-toggle= command could toggle to show dired buffer as a sidebar
