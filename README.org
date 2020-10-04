@@ -1,7 +1,5 @@
-#+BEGIN_EXPORT html
-<a href="https://melpa.org/#/elfeed-protocol"><img alt="MELPA" src="https://melpa.org/packages/elfeed-protocol-badge.svg"/></a>
-<a href="https://stable.melpa.org/#/elfeed-protocol"><img alt="MELPA Stable" src="https://stable.melpa.org/packages/elfeed-protocol-badge.svg"/></a>
-#+END_EXPORT
+#+HTML: <a href="https://melpa.org/#/elfeed-protocol"><img alt="MELPA" src="https://melpa.org/packages/elfeed-protocol-badge.svg"/></a>
+#+HTML: <a href="https://stable.melpa.org/#/elfeed-protocol"><img alt="MELPA Stable" src="https://stable.melpa.org/packages/elfeed-protocol-badge.svg"/></a>
 
 *** Description
 
